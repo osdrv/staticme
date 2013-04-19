@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "bin/staticme",
     "lib/staticme.rb",
+    "staticme.gemspec",
     "test/helper.rb",
     "test/test_staticme.rb"
   ]
