@@ -17,10 +17,11 @@ Jeweler::Tasks.new do |gem|
   gem.name = "staticme"
   gem.homepage = "http://github.com/4pcbr/staticme"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "me@4pcbr.com"
+  gem.summary = %Q{Simple Thin-based static web server}
+  gem.description = %Q{Staticme allows you to run tiny webserver just in any folder you like to serve your static files}
+  gem.email = "me@whitebox.io"
   gem.authors = ["4pcbr"]
+  gem.executables = "staticme"
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
