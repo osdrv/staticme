@@ -1,80 +1,32 @@
 require 'rubygems'
-require 'rack'
-require 'thin'
+
+require 'staticme/app'
+require 'staticme/arguments'
+require 'staticme/runner'
+require 'staticme/thin_runner'
 
 module Staticme
 
   extend self
 
-  attr_accessor :server
+  extend Staticme::Arguments
 
-  ARGS  = {
-    :path   => {
-      :short      => 'f',
-      :default    => Proc.new { Dir.pwd }
-    },
-    :port   => {
-      :short    => 'p',
-      :default    => 8080,
-      :sanitizer  => Proc.new { |v| v.to_i }
-    },
-    :host   => {
-      :short      => 'h',
-      :default    => '0.0.0.0'
-    },
-    :index  => {
-      :short      => 'i',
-      :default    => 'index.html'
-    }
-  }
+  attr_accessor :runner
 
   def run!(argv, &blk)
 
-    params = Hash.new
+    params = parse_input(argv)
 
-    ARGS.each_pair do |param_name, param_attrs|
-      param_shorten_name = param_attrs[:shorten]
-      default = param_attrs[:default]
-      sanitizer = param_attrs[:sanitizer]
-      param_value = argv["--#{param_name}"] ||
-                    ( param_shorten_name.nil? ? nil : argv["-#{param_shorten_name}"] ) ||
-                    ( default.is_a?(Proc) ? default.call : default )
-      ( param_value = sanitizer.call( param_value ) ) if sanitizer.is_a? Proc
+    app = Staticme::App.new(params).bind
 
-      if !param_value.nil?
-        params[param_name] = param_value
-      end
+    runner = Staticme::ThinRunner.new
 
-    end
-
-    staticme_app = Rack::Builder.new do
-
-      index = params[:index]
-      path = params[:path]
-
-      if !index.nil? && File.exists?( File.join( path, index ) )
-        map '/' do
-          run Rack::File.new( File.join( path, index ) )
-        end
-      end
-      run Rack::Directory.new( path )
-    end
-
-    Rack::Handler::Thin.run(
-      staticme_app,
-      {
-        :Port => params[:port],
-        :Host => params[:host]
-      }
-    ) do |server|
-      self.server = server
-      blk.call(server) if block_given?
-    end
+    runner.start(app, params, &blk)
 
   end
 
   def stop!
-    self.server.stop!
+    runner.stop
   end
 
 end
