@@ -1,3 +1,5 @@
+require 'rack/staticme_builder'
+
 module Staticme
 
   class App
@@ -10,16 +12,24 @@ module Staticme
 
     def bind
       params = self.params
-      Rack::Builder.new do
+      
+      Rack::StaticmeBuilder.new do
+        
+        use Rack::CommonLogger
+        
         index = params[:index]
         path = params[:path]
 
+        map /^\/.+/ do
+          run Rack::Directory.new( path )
+        end
+
         if !index.nil? && File.exists?( File.join( path, index ) )
-          map '/' do
+          map /^\/$/ do
             run Rack::File.new( File.join( path, index ) )
           end
         end
-        run Rack::Directory.new( path )
+        
       end
     end
 

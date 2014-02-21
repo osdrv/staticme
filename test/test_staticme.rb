@@ -16,7 +16,7 @@ class TestStaticme < Test::Unit::TestCase
     }
   end
 
-  should "Serve index.html for the root path" do
+  should 'Serve index.html for the root path' do
 
     uri = URI::HTTP.build(
       :host => @params['--host'],
@@ -39,6 +39,60 @@ class TestStaticme < Test::Unit::TestCase
             @params['--index']
           )
         ) )
+        srv.stop
+      end
+    end
+  end
+
+  should 'Serve file by exact name' do
+
+    file_name = 'index2.html'
+
+    uri = URI::HTTP.build(
+      :host => @params['--host'],
+      :port => @params['--port'],
+      :path => "/#{file_name}"
+    )
+
+    Staticme.run! @params do |srv|
+      Thread.new do
+        Thread.abort_on_exception = true
+        sleep 1
+        req = Net::HTTP::Get.new(uri.path)
+        res = Net::HTTP.start(uri.host, uri.port) { |http|
+          http.request(req)
+        }
+        assert_equal( 200, res.code.to_i )
+        assert_equal( res.body, IO.read(
+          File.join(
+            @params['--path'],
+            file_name
+          )
+        ) )
+        srv.stop
+      end
+    end
+  end
+
+  should 'Not serve absent file' do
+
+    file_name = 'index3.html'
+
+    uri = URI::HTTP.build(
+      :host => @params['--host'],
+      :port => @params['--port'],
+      :path => "/#{file_name}"
+    )
+
+    Staticme.run! @params do |srv|
+      Thread.new do
+        Thread.abort_on_exception = true
+        sleep 1
+        req = Net::HTTP::Get.new(uri.path)
+        res = Net::HTTP.start(uri.host, uri.port) { |http|
+          http.request(req)
+        }
+        assert_equal( 404, res.code.to_i )
         srv.stop
       end
     end
