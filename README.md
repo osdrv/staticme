@@ -14,9 +14,10 @@ gem install staticme
 
 ### Options:
 
-  * -f, --path: path to be served in, current if omitted
-  * -p, --port: port to bind, 8080 by default
-  * -h, --host: host to start up, 0.0.0.0 by default
+  * -f, --path:   path to be served in, current if omitted
+  * -p, --port:   port to bind, 8080 by default
+  * -h, --host:   host to start up, 0.0.0.0 by default
+  * -i, --index:  index file name, index.html by default
 
 ### Starting up
 
