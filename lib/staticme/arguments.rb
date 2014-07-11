@@ -3,28 +3,32 @@ module Staticme
   module Arguments
 
     ARGS  = {
-      :path   => {
+      :path       => {
         :short      => 'f',
         :default    => Proc.new { Dir.pwd }
       },
-      :port   => {
+      :port       => {
         :short    => 'p',
         :default    => 8080,
         :sanitizer  => Proc.new { |v| v.to_i }
       },
-      :host   => {
+      :host       => {
         :short      => 'h',
         :default    => '0.0.0.0'
       },
-      :index  => {
+      :index      => {
         :short      => 'i',
         :default    => 'index.html'
+      },
+      :ws_port    => {
+        :short      => 'ws',
+        :default    => 8090,
       }
     }
 
     def parse_input(argv)
       params = Hash.new
-      
+
       ARGS.each_pair do |param_name, param_attrs|
         param_shorten_name = param_attrs[:shorten]
         default = param_attrs[:default]

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "staticme"
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["4pcbr"]
-  s.date = "2014-02-21"
+  s.date = "2014-07-17"
   s.description = "Staticme allows you to run tiny webserver just in any folder you like to serve your static files"
   s.email = "me@whitebox.io"
   s.executables = ["staticme"]
@@ -23,8 +23,13 @@ Gem::Specification.new do |s|
     "lib/staticme.rb",
     "lib/staticme/app.rb",
     "lib/staticme/arguments.rb",
+    "lib/staticme/events/dispatcher.rb",
+    "lib/staticme/events/emitters/file_changed.rb",
     "lib/staticme/runner.rb",
-    "lib/staticme/thin_runner.rb"
+    "lib/staticme/scripts.rb",
+    "lib/staticme/scripts/autoreload.rb",
+    "lib/staticme/thin_runner.rb",
+    "lib/staticme/web_socket.rb"
   ]
   s.homepage = "http://github.com/4pcbr/staticme"
   s.licenses = ["MIT"]
@@ -38,6 +43,8 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rake>, [">= 0"])
       s.add_runtime_dependency(%q<thin>, [">= 0"])
+      s.add_runtime_dependency(%q<em-websocket>, [">= 0"])
+      s.add_runtime_dependency(%q<rb-fsevent>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
@@ -45,6 +52,8 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<thin>, [">= 0"])
+      s.add_dependency(%q<em-websocket>, [">= 0"])
+      s.add_dependency(%q<rb-fsevent>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, [">= 0"])
@@ -53,6 +62,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<thin>, [">= 0"])
+    s.add_dependency(%q<em-websocket>, [">= 0"])
+    s.add_dependency(%q<rb-fsevent>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, [">= 0"])
