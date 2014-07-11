@@ -9,6 +9,9 @@ GEM
       mocha (~> 0.13.2)
     builder (3.2.2)
     daemons (1.1.9)
+    em-websocket (0.5.1)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.6.0)
     eventmachine (1.0.3)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
@@ -22,6 +25,7 @@ GEM
       oauth2
     hashie (2.0.5)
     highline (1.6.20)
+    http_parser.rb (0.6.0)
     i18n (0.6.1)
     jeweler (2.0.1)
       builder
@@ -71,6 +75,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  em-websocket
   jeweler (~> 2.0.1)
   rake
   rdoc (~> 3.12)

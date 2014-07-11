@@ -133,4 +133,49 @@ class TestStaticme < Test::Unit::TestCase
     end
   end
 
+  should 'Serve autoreload script path' do
+
+    uri = URI::HTTP.build(
+      :host => @params['--host'],
+      :port => @params['--port'],
+      :path => '/staticme/autoreload.js'
+    )
+
+    Staticme.run! @params do |srv|
+      Thread.new do
+        Thread.abort_on_exception = true
+        sleep 1
+        req = Net::HTTP::Get.new(uri.path)
+        res = Net::HTTP.start(uri.host, uri.port) { |http|
+          http.request(req)
+        }
+        assert_equal( 200, res.code.to_i )
+        srv.stop
+      end
+    end
+
+  end
+
+  should 'Emit event with parameters given' do
+    a0 = [1,23,34]
+    b0 = { :c => 1 }
+    c0 = "Hello world!"
+    event_name = 'test_event'
+    dispatcher = Staticme::Events::Dispatcher.new
+    test_ran = false
+
+    Thread.new do
+      Thread.abort_on_exception = true
+      sleep 1
+      dispatcher.on event_name do |a1, b1, c1|
+        assert_equal(a1, a0)
+        assert_equal(b1, b0)
+        assert_equal(c1, c0)
+        test_ran = true
+      end
+      dispatcher.emit(event_name, a0, b0, c0)
+      assert_equal(test_ran, true)
+    end
+  end
+
 end

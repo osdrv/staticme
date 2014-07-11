@@ -8,6 +8,7 @@ source "http://rubygems.org"
 
 gem "rake"
 gem "thin"
+gem "em-websocket"
 
 group :development do
   gem "shoulda", ">= 0"

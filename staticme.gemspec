@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["4pcbr"]
   s.date = "2014-02-21"
-  s.description = "Staticme allows you to run tiny webserver just in any folder you like to serve your static files"
+  s.description = "Staticme allows you to run a tiny webserver just in any folder you like to serve your static files"
   s.email = "me@whitebox.io"
   s.executables = ["staticme"]
   s.extra_rdoc_files = [
@@ -24,7 +24,9 @@ Gem::Specification.new do |s|
     "lib/staticme/app.rb",
     "lib/staticme/arguments.rb",
     "lib/staticme/runner.rb",
-    "lib/staticme/thin_runner.rb"
+    "lib/staticme/thin_runner.rb",
+    "lib/staticme/scripts.rb",
+    "lib/staticme/scripts/autoreload.rb",
   ]
   s.homepage = "http://github.com/4pcbr/staticme"
   s.licenses = ["MIT"]

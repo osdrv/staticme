@@ -2,8 +2,12 @@ require 'rubygems'
 
 require 'staticme/app'
 require 'staticme/arguments'
+require 'staticme/events/dispatcher'
 require 'staticme/runner'
 require 'staticme/thin_runner'
+require 'staticme/scripts'
+require 'staticme/scripts/autoreload'
+require 'staticme/web_socket'
 
 module Staticme
 

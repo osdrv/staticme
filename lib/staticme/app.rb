@@ -12,13 +12,17 @@ module Staticme
 
     def bind
       params = self.params
-      
+
       Rack::StaticmeBuilder.new do
         
         use Rack::CommonLogger
-        
-        index = params[:index]
-        path = params[:path]
+
+        index      = params[:index]
+        path       = params[:path]
+
+        map '/staticme/autoreload.js' do
+          run Staticme::Scripts::Autoreload
+        end
 
         map /^\/.+/ do
           run Rack::Directory.new( path )
