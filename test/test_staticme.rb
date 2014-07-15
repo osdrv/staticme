@@ -39,7 +39,7 @@ class TestStaticme < Test::Unit::TestCase
             @params['--index']
           )
         ) )
-        srv.stop
+        Staticme.stop!
       end
     end
   end
@@ -69,7 +69,7 @@ class TestStaticme < Test::Unit::TestCase
             file_name
           )
         ) )
-        srv.stop
+        Staticme.stop!
       end
     end
   end
@@ -104,7 +104,7 @@ class TestStaticme < Test::Unit::TestCase
             file_name
           )
         ) )
-        srv.stop
+        Staticme.stop!
       end
     end
   end
@@ -120,15 +120,17 @@ class TestStaticme < Test::Unit::TestCase
     )
 
     Staticme.run! @params do |srv|
+      puts 'I started!'
       Thread.new do
         Thread.abort_on_exception = true
+        puts "I'm about to really run"
         sleep 1
         req = Net::HTTP::Get.new(uri.path)
         res = Net::HTTP.start(uri.host, uri.port) { |http|
           http.request(req)
         }
         assert_equal( 404, res.code.to_i )
-        srv.stop
+        Staticme.stop!
       end
     end
   end
@@ -150,7 +152,7 @@ class TestStaticme < Test::Unit::TestCase
           http.request(req)
         }
         assert_equal( 200, res.code.to_i )
-        srv.stop
+        Staticme.stop!
       end
     end
 
@@ -163,19 +165,14 @@ class TestStaticme < Test::Unit::TestCase
     event_name = 'test_event'
     dispatcher = Staticme::Events::Dispatcher.new
     test_ran = false
-
-    Thread.new do
-      Thread.abort_on_exception = true
-      sleep 1
-      dispatcher.on event_name do |a1, b1, c1|
-        assert_equal(a1, a0)
-        assert_equal(b1, b0)
-        assert_equal(c1, c0)
-        test_ran = true
-      end
-      dispatcher.emit(event_name, a0, b0, c0)
-      assert_equal(test_ran, true)
+    dispatcher.on event_name do |a1, b1, c1|
+      assert_equal(a1, a0)
+      assert_equal(b1, b0)
+      assert_equal(c1, c0)
+      test_ran = true
     end
+    dispatcher.emit(event_name, a0, b0, c0)
+    assert_equal(test_ran, true)
   end
 
 end

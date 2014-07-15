@@ -10,6 +10,7 @@ module Staticme
 
       def on(event_name, &event_handler)
         (@events[event_name.to_sym] ||= []).push(event_handler)
+        self
       end
 
       def emit(event_name, *args)
@@ -19,6 +20,7 @@ module Staticme
             handler.call(*args)
           end
         end
+        self
       end
 
     end

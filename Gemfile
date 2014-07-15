@@ -9,6 +9,7 @@ source "http://rubygems.org"
 gem "rake"
 gem "thin"
 gem "em-websocket"
+gem "rb-fsevent"
 
 group :development do
   gem "shoulda", ">= 0"

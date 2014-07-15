@@ -15,6 +15,7 @@ module Staticme
 
     def run!(&block)
       EM.next_tick do
+        puts "Starting WebSocket on ws://#{params[:host]}:#{params[:ws_port]}"
         EM::WebSocket.run(:host => params[:host], :port => params[:ws_port]) do |ws|
           @pool.push ws
           ws.onclose do
