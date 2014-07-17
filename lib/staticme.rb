@@ -1,14 +1,15 @@
 require 'rubygems'
+require 'logger'
 
-require './staticme/app'
-require './staticme/arguments'
-require './staticme/events/dispatcher'
-require './staticme/events/emitters/file_changed'
-require './staticme/runner'
-require './staticme/thin_runner'
-require './staticme/scripts'
-require './staticme/scripts/autoreload'
-require './staticme/web_socket'
+require 'staticme/app'
+require 'staticme/arguments'
+require 'staticme/events/dispatcher'
+require 'staticme/events/emitters/file_changed'
+require 'staticme/runner'
+require 'staticme/thin_runner'
+require 'staticme/scripts'
+require 'staticme/scripts/autoreload'
+require 'staticme/web_socket'
 
 module Staticme
 
@@ -16,8 +17,11 @@ module Staticme
 
   extend Staticme::Arguments
 
+  include Staticme::Events::Dispatcher
+
   attr_accessor :app,
                 :event_dispatcher,
+                :logger,
                 :params,
                 :runner,
                 :ws
@@ -25,42 +29,46 @@ module Staticme
   def run!(argv, &blk)
 
     self.params = parse_input(argv)
-
     self.app = Staticme::App.new(params).bind
-
-    self.event_dispatcher = Staticme::Events::Dispatcher.new
-
+    self.logger = ::Logger.new(STDOUT)
+    self.logger.level = Logger::DEBUG
     self.runner = Staticme::ThinRunner.new
-
     self.ws = Staticme::WebSocket.new(params)
-
-    event_dispatcher.emit(:staticme_inited)
 
     register_event_handlers
 
+    emit(:staticme_inited)
+
     runner.start(app, params) do |server|
-      event_dispatcher.emit(:web_server_started, server)
+      emit(:web_server_started, server)
+      logger.debug('Web server started')
       ws.run!
       blk.call(server) if !blk.nil?
     end
   end
 
+  def broadcast(data)
+    begin
+      ws.emit(data)
+    rescue
+      logger.warn('Unable to broadcast event')
+    end
+  end
+
   def stop!
-    event_dispatcher.emit(:staticme_terminated)
+    self.emit(:staticme_terminated)
     runner.stop
   end
 
   private
 
   def register_event_handlers
-    fs_emitter = Staticme::Events::Emitters::FileChanged.new(self)
-    event_dispatcher.on(:fs_changed) do
-      puts 'about to broadcast data to ws clients'
-      ws.emit(:event => 'fs_change')
-    end.on(:staticme_terminated) do
-      fs_emitter.stop!
+    %w(FileChanged).each do |emitter_name|
+      klass = Object.const_get "Staticme::Events::Emitters::#{emitter_name}"
+      logger.debug("Registering event emitter: #{klass.to_s}")
+      emitter = klass.new
+      emitter.bind!
     end
-    fs_emitter.bind!
   end
 
 end

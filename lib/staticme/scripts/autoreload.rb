@@ -6,7 +6,8 @@ module Staticme
 
       extend self
 
-      JS_TEMPLATE = <<-eos
+      def js_output
+        <<-eos
 (function() {
   window.addEventListener('DOMContentLoaded', function() {
 
@@ -29,7 +30,7 @@ module Staticme
     }
 
     var location   = window.location,
-        ws_url     = "ws://" + location.hostname + ':8090',
+        ws_url     = "ws://" + location.hostname + ':#{Staticme.params[:ws_port].to_i}',
         dispatcher = new Dispatcher({
           'fs_change': function() {
             console.log('Remote fs change, reloading the page...');
@@ -81,9 +82,10 @@ module Staticme
   }, false);
 })(window);
 eos
+    end
 
     def call(arg)
-      [200, {:'Content-Type' => 'application/javascript'}, [JS_TEMPLATE]]
+      [200, {:'Content-Type' => 'application/javascript'}, [js_output]]
     end
 
     end

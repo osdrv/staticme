@@ -15,7 +15,7 @@ module Staticme
 
     def run!(&block)
       EM.next_tick do
-        puts "Starting WebSocket on ws://#{params[:host]}:#{params[:ws_port]}"
+        Staticme.logger.debug "Starting WebSocket server on ws://#{params[:host]}:#{params[:ws_port]}"
         EM::WebSocket.run(:host => params[:host], :port => params[:ws_port]) do |ws|
           @pool.push ws
           ws.onclose do
@@ -27,6 +27,7 @@ module Staticme
     end
 
     def emit(event)
+      Staticme.logger.debug("Broadcasting event: #{event.to_json}")
       @pool.each do |ws|
         next if ws.nil?
         ws.send event.to_json
@@ -34,6 +35,7 @@ module Staticme
     end
 
     def stop!
+      Staticme.logger.debug('Stopping WebSocket server')
       EM.stop!
       @pool = []
     end

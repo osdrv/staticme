@@ -9,28 +9,31 @@ module Staticme
 
       class FileChanged
 
-        attr_accessor :app,
-                      :fsevent
+        attr_accessor :fsevent
 
-        def initialize(app)
-          self.app = app
-          puts 'FSEvent instance would be created'
+        def initialize
           self.fsevent = FSEvent.new
-          puts 'FSEvent instance has been created'
         end
 
         def bind!
-          event_dispatcher = app.event_dispatcher
-          params = app.params
-          fsevent.watch params[:path] do |dirs|
-            puts 'FS change, broadcasting the event'
-            event_dispatcher.emit(:fs_changed, dirs)
+
+          params = Staticme.params
+
+          Staticme.on(:fs_changed) do
+            Staticme.broadcast(:event => 'fs_change')
+          end.on(:staticme_terminated) do
+            self.stop!
           end
-          puts "About to run"
+
+          fsevent.watch params[:path] do |dirs|
+            Staticme.logger.info 'FS change, publishing the event.'
+            Staticme.emit(:fs_changed, dirs)
+          end
+
           Thread.new do
             fsevent.run
           end
-          puts "Run!"
+
         end
 
         def stop!

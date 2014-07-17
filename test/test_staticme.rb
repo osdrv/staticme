@@ -123,7 +123,6 @@ class TestStaticme < Test::Unit::TestCase
       puts 'I started!'
       Thread.new do
         Thread.abort_on_exception = true
-        puts "I'm about to really run"
         sleep 1
         req = Net::HTTP::Get.new(uri.path)
         res = Net::HTTP.start(uri.host, uri.port) { |http|
@@ -163,15 +162,18 @@ class TestStaticme < Test::Unit::TestCase
     b0 = { :c => 1 }
     c0 = "Hello world!"
     event_name = 'test_event'
-    dispatcher = Staticme::Events::Dispatcher.new
+    module A
+      extend self
+      include Staticme::Events::Dispatcher
+    end
     test_ran = false
-    dispatcher.on event_name do |a1, b1, c1|
+    A.on event_name do |a1, b1, c1|
       assert_equal(a1, a0)
       assert_equal(b1, b0)
       assert_equal(c1, c0)
       test_ran = true
     end
-    dispatcher.emit(event_name, a0, b0, c0)
+    A.emit(event_name, a0, b0, c0)
     assert_equal(test_ran, true)
   end
 
