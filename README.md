@@ -28,11 +28,11 @@ gem install staticme
 
 ### Options:
 
-  * -f, --path:   path to be served in, current if omitted
-  * -p, --port:   port to bind, 8080 by default
-  * -h, --host:   host to start up, 0.0.0.0 by default
-  * -i, --index:  index file name, index.html by default
-  * --ws-port:    websocket port, 8090 by default. Available since 0.3.0
+  * -f, --path:     path to be served in, current if omitted
+  * -p, --port:     port to bind, 8080 by default
+  * -h, --host:     host to start up, 0.0.0.0 by default
+  * -i, --index:    index file name, index.html by default
+  * -ws, --ws_port: websocket port, 8090 by default. Available since 0.3.0
 
 ### Starting up
 
