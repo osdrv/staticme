@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["4pcbr"]
-  s.date = "2014-07-17"
+  s.date = "2014-07-21"
   s.description = "Staticme allows you to run tiny webserver just in any folder you like to serve your static files"
   s.email = "me@whitebox.io"
   s.executables = ["staticme"]
