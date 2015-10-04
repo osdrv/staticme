@@ -1,4 +1,5 @@
 require 'rack/staticme_builder'
+require 'rack/index_file'
 
 module Staticme
 
@@ -28,7 +29,7 @@ module Staticme
 
         if !index.nil? && File.exists?( File.join( path, index ) )
           map /^\/$/ do
-            run Rack::File.new( File.join( path, index ) )
+            run Rack::IndexFile.new( File.join( path, index ) )
           end
         end
 

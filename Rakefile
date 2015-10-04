@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "staticme"
   gem.homepage = "http://github.com/4pcbr/staticme"
   gem.license = "MIT"
-  gem.summary = %Q{Simple Thin-based static web server}
-  gem.description = %Q{Staticme allows you to run tiny webserver just in any folder you like to serve your static files}
+  gem.summary = %Q{A dummy web server to serve static content}
+  gem.description = %Q{Staticme is a very easy-to-use webserver built on top of Thin and Rack to serve static files in a directory provided as the webroot}
   gem.email = "me@whitebox.io"
   gem.authors = ["4pcbr"]
   gem.executables = "staticme"

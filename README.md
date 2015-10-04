@@ -6,6 +6,10 @@ StaticMe is simple server for serving static content built on top of [thin](http
 
 ## News
 
+#### Version 0.4.0 has been released
+
+The new version fixes the incompatibilities with ::Rack::File in new rack 1.6.4.
+
 #### Version 0.3.0 has been released
 
 This version introduces an automatic webpage reload functionality.

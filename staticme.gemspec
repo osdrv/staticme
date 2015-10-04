@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "staticme"
-  s.version = "0.3.0"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["4pcbr"]
-  s.date = "2014-07-21"
-  s.description = "Staticme allows you to run tiny webserver just in any folder you like to serve your static files"
+  s.date = "2015-10-04"
+  s.description = "Staticme is a very easy-to-use webserver built on top of Thin and Rack to serve static files in a directory provided as the webroot"
   s.email = "me@whitebox.io"
   s.executables = ["staticme"]
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
+    "lib/rack/index_file.rb",
     "lib/rack/staticme_builder.rb",
     "lib/rack/staticme_urlmap.rb",
     "lib/staticme.rb",
@@ -35,25 +36,27 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "2.0.6"
-  s.summary = "Simple Thin-based static web server"
+  s.summary = "A dummy web server to serve static content"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rake>, [">= 0"])
-      s.add_runtime_dependency(%q<thin>, [">= 0"])
+      s.add_runtime_dependency(%q<thin>, ["~> 1.6.3"])
       s.add_runtime_dependency(%q<em-websocket>, [">= 0"])
       s.add_runtime_dependency(%q<rb-fsevent>, [">= 0"])
+      s.add_runtime_dependency(%q<rack>, [">= 1.6.4"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
     else
       s.add_dependency(%q<rake>, [">= 0"])
-      s.add_dependency(%q<thin>, [">= 0"])
+      s.add_dependency(%q<thin>, ["~> 1.6.3"])
       s.add_dependency(%q<em-websocket>, [">= 0"])
       s.add_dependency(%q<rb-fsevent>, [">= 0"])
+      s.add_dependency(%q<rack>, [">= 1.6.4"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, [">= 0"])
@@ -61,9 +64,10 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rake>, [">= 0"])
-    s.add_dependency(%q<thin>, [">= 0"])
+    s.add_dependency(%q<thin>, ["~> 1.6.3"])
     s.add_dependency(%q<em-websocket>, [">= 0"])
     s.add_dependency(%q<rb-fsevent>, [">= 0"])
+    s.add_dependency(%q<rack>, [">= 1.6.4"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, [">= 0"])

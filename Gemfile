@@ -1,15 +1,9 @@
 source "http://rubygems.org"
-# Add dependencies required to use your gem here.
-# Example:
-#   gem "activesupport", ">= 2.3.5"
-
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
-
 gem "rake"
-gem "thin"
+gem "thin", "~> 1.6.3"
 gem "em-websocket"
 gem "rb-fsevent"
+gem "rack", ">=1.6.4"
 
 group :development do
   gem "shoulda", ">= 0"
